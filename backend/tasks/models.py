@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 import logging
-from .constants import ERROR_MESSAGES, MODEL_VERBOSE_NAMES
+from constants import ERROR_MESSAGES, MODEL_VERBOSE_NAMES
 
 # Configure logger
 logger = logging.getLogger(__name__)

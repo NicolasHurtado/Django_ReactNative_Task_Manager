@@ -6,7 +6,7 @@ from drf_spectacular.utils import extend_schema
 
 class RegisterView(generics.CreateAPIView):
     """
-    API endpoint para registrar nuevos usuarios.
+    API endpoint for registering new users.
     """
 
     permission_classes = [permissions.AllowAny]
@@ -19,7 +19,7 @@ class RegisterView(generics.CreateAPIView):
     )
     def post(self, request):
         """
-        Registrar un nuevo usuario.
+        Register a new user.
         """
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():

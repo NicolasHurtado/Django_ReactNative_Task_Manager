@@ -6,9 +6,18 @@ used across multiple files in the application to maintain consistency
 and simplify future updates.
 """
 
+from typing import Final
+
 # Date formats
-DATE_FORMAT = "%Y-%m-%d"
-DATE_FORMAT_DISPLAY = "YYYY-MM-DD"
+DATE_FORMAT: Final[str] = "%Y-%m-%d"
+DATE_FORMAT_DISPLAY: Final[str] = "YYYY-MM-DD"
+USERNAME_STR: Final[str] = "username"
+EMAIL_STR: Final[str] = "email"
+FIRST_NAME_STR: Final[str] = "first_name"
+LAST_NAME_STR: Final[str] = "last_name"
+PASSWORD_STR: Final[str] = "password"
+PASSWORD_CONFIRM_STR: Final[str] = "password_confirm"
+ID_STR: Final[str] = "id"
 
 # Error messages
 ERROR_MESSAGES = {

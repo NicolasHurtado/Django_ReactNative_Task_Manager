@@ -7,7 +7,7 @@ from rest_framework.test import APIClient
 from datetime import date, timedelta
 from typing import List, Tuple, Callable
 from tasks.models import Task
-from tasks.constants import ERROR_MESSAGES, QUERY_PARAMS
+from constants import ERROR_MESSAGES, QUERY_PARAMS
 
 
 @pytest.mark.django_db  # Necesario para acceder a la base de datos

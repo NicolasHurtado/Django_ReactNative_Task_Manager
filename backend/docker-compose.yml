@@ -54,7 +54,7 @@ services:
   # Nginx to serve static  files and proxy to backend
   nginx:
     build:
-      context: ./nginx
+      context: ./config/nginx
       dockerfile: Dockerfile
     container_name: nginx
     restart: always

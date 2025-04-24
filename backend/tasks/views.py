@@ -10,7 +10,7 @@ from tasks.serializers import TaskSerializer
 from django.contrib.auth.models import User
 from drf_spectacular.utils import extend_schema, OpenApiParameter
 from drf_spectacular.types import OpenApiTypes
-from tasks.constants import DATE_FORMAT, DATE_FORMAT_DISPLAY, ERROR_MESSAGES, QUERY_PARAMS
+from constants import DATE_FORMAT, DATE_FORMAT_DISPLAY, ERROR_MESSAGES, QUERY_PARAMS
 
 # Configure logger
 logger = logging.getLogger(__name__)

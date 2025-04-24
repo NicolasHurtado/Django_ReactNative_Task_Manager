@@ -4,7 +4,7 @@ from tasks.models import Task
 from django.contrib.auth.models import User
 from django.db.models import Q
 import logging
-from .constants import ERROR_MESSAGES, FIELD_REQUIREMENTS
+from constants import ERROR_MESSAGES, FIELD_REQUIREMENTS
 from datetime import date
 
 # Configure logger
