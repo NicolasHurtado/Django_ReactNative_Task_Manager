@@ -21,7 +21,9 @@ Backend for the task management application developed with Django and Django RES
 - **PostgreSQL**: Database (SQLite in development)
 - **Docker**: Deployment and development
 - **Nginx**: Web server and reverse proxy
-- **pytest**: Testing framework
+- **pytest**: Testing framework with coverage reporting
+- **Poetry**: Dependency management
+- **Black, Flake8, MyPy**: Code quality tools
 
 ## Best Practices Implemented
 
@@ -32,7 +34,9 @@ Backend for the task management application developed with Django and Django RES
 - **PEP 8**: Compliance with Python style standards
 - **Robust validation**: Both at serializer and model levels
 - **Type Hints**: Type suggestions for better readability
-- **Testing**: Comprehensive tests, including complex validations
+- **Testing**: Comprehensive tests with 95%+ code coverage
+- **Dependency Management**: Poetry for dependency management
+- **Unified Configuration**: Centralized tool configuration in pyproject.toml
 
 ## Docker Configuration
 
@@ -148,60 +152,74 @@ These validations are implemented in the serializer and are covered by specific 
 
 If you prefer to develop without Docker:
 
-1. Create a virtual environment:
+1. Install Poetry (if you don't have it already)
 ```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+curl -sSL https://install.python-poetry.org | python3 -
 ```
 
 2. Install dependencies:
 ```bash
-pip install -r requirements.txt
+poetry install
 ```
 
 3. Configure environment variables or create a local .env file
 
 4. Run migrations:
 ```bash
-python manage.py migrate
+poetry run python manage.py migrate
 ```
 
 5. Create a superuser:
 ```bash
-python manage.py createsuperuser
+poetry run python manage.py createsuperuser
 ```
 
 6. Start the development server:
 ```bash
-python manage.py runserver
+poetry run python manage.py runserver
 ```
 
 ## Running Tests
 
-The project uses pytest for testing. To run the tests:
+The project uses pytest for testing with integrated code coverage reporting. To run the tests:
 
 ```bash
 # With Docker
-docker-compose exec backend pytest
+docker-compose exec backend poetry run pytest
 
 # Without Docker
-pytest
-
-# With coverage
-pytest --cov=.
+poetry run pytest
 ```
+
+The coverage configuration is in `pyproject.toml` and will automatically:
+- Generate a coverage report in the terminal
+- Show which lines are not covered by tests
+- Exclude non-essential files like migrations from the report
+
+The project maintains a code coverage of 95%+ for critical components.
 
 ## Code Quality
 
-This project follows development best practices and has tools to maintain code quality:
+This project follows development best practices and has tools to maintain code quality, all configured in `pyproject.toml`:
 
 ```bash
-# Format code
-black .
+# Format code with Black
+poetry run black .
 
-# Check style
-flake8
+# Run linting with Flake8
+poetry run flake8
 
-# Verify typing
-mypy .
+# Run type checking with MyPy
+poetry run mypy .
+
+# Or use the provided script for all checks
+bash lint.sh
+```
+
+## Managing Dependencies
+
+To update the `requirements.txt` file from `pyproject.toml` (useful for non-Poetry environments):
+
+```bash
+poetry export -f requirements.txt --output requirements.txt --without-hashes
 ``` 

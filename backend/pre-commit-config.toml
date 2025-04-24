@@ -1,0 +1,27 @@
+[pre-commit]
+# Patterns to include for linting
+include = '''\.py$'''
+
+# Patterns to exclude from linting
+exclude = '''
+/(
+    \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | venv
+  | _build
+  | buck-out
+  | build
+  | dist
+  | migrations
+)/
+'''
+
+# Directories to exclude completely
+exclude_dirs = [
+    "venv",
+    ".venv",
+    "migrations",
+] 

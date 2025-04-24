@@ -2,23 +2,35 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-# Install dependencies
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+# Install system dependencies needed for psycopg2
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    gcc \
+    python3-dev \
+    libpq-dev \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
-# Create logs directory
-RUN mkdir -p /app/logs && chmod 777 /app/logs
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    POETRY_VERSION=1.7.1 \
+    POETRY_HOME="/opt/poetry" \
+    POETRY_VIRTUALENVS_CREATE=false
 
-# Copy wait_for_db script first (to take advantage of the cache)
-COPY wait_for_db.py .
-RUN chmod +x wait_for_db.py
+# Install Poetry
+RUN pip install --no-cache-dir "poetry==$POETRY_VERSION"
 
-# Copy create_superuser script
-COPY create_superuser.py .
-RUN chmod +x create_superuser.py
+# Copy only the necessary files to install dependencies
+COPY pyproject.toml poetry.lock ./
 
-# Copy source code
+
+# Generate the lock file and install dependencies
+RUN poetry install --no-interaction --no-ansi --no-root
+
+
 COPY . .
+RUN chmod +x wait_for_db.py create_superuser.py
 
 # Expose port
 EXPOSE 8000

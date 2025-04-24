@@ -29,28 +29,30 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
+
 # Vista simple para probar que la API funciona
-@api_view(['GET'])
+@api_view(["GET"])
 @permission_classes([AllowAny])
 def healthcheck(request):
     return Response({"status": "ok", "message": "API funcionando correctamente"})
 
+
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    
+    path("admin/", admin.site.urls),
     # API Documentation
-    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
-    path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
-    path('api/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
-    
+    path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
+    path(
+        "api/docs/",
+        SpectacularSwaggerView.as_view(url_name="schema"),
+        name="swagger-ui",
+    ),
+    path("api/redoc/", SpectacularRedocView.as_view(url_name="schema"), name="redoc"),
     # Vista de prueba
-    path('api/health/', healthcheck, name='healthcheck'),
-    
+    path("api/health/", healthcheck, name="healthcheck"),
     # API URLs
-    path('api/', include('tasks.urls')),
-    path('api/auth/', include('users.urls')),
-    
+    path("api/", include("tasks.urls")),
+    path("api/auth/", include("users.urls")),
     # Authentication
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
+    path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
 ]
