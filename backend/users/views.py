@@ -1,0 +1,31 @@
+from rest_framework import generics, permissions, status
+from rest_framework.response import Response
+from django.contrib.auth.models import User
+from rest_framework.decorators import api_view, permission_classes
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError
+from django.db import transaction
+from .serializers import UserSerializer
+from drf_spectacular.utils import extend_schema
+
+class RegisterView(generics.CreateAPIView):
+    """
+    API endpoint para registrar nuevos usuarios.
+    """
+    permission_classes = [permissions.AllowAny]
+    serializer_class = UserSerializer
+
+    @extend_schema(
+        description="Register a new user",
+        request=UserSerializer,
+        responses={201: UserSerializer}
+    )
+    def post(self, request):
+        """
+        Registrar un nuevo usuario.
+        """
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
