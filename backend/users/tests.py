@@ -137,3 +137,31 @@ class TestUserAPI:
         assert user is not None
         assert user.first_name == ""
         assert user.last_name == ""
+
+    def test_login_with_email(self) -> None:
+        """Test logging in with email."""
+        # Register a user so the password is stored correctly
+        register_data = {
+            USERNAME_STR: "UserLogin",
+            EMAIL_STR: "userlogin@example.com",
+            FIRST_NAME_STR: "User",
+            LAST_NAME_STR: "Login",
+            PASSWORD_STR: "UserLogin123",
+            PASSWORD_CONFIRM_STR: "UserLogin123",
+        }
+
+        # Register the user
+        self.client.post(self.register_url, register_data, format="json")
+
+        # Try to login
+        login_data = {
+            EMAIL_STR: register_data[EMAIL_STR],
+            PASSWORD_STR: register_data[PASSWORD_STR],
+        }
+
+        response: Response = self.client.post(reverse("login"), login_data, format="json")
+
+        assert response.status_code == status.HTTP_200_OK
+        assert "access" in response.data
+        assert "refresh" in response.data
+        assert "user" in response.data

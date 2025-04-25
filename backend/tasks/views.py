@@ -107,6 +107,7 @@ class TaskViewSet(viewsets.ModelViewSet):
 
         if start:
             try:
+                logger.info(f"Start date: {start}")
                 start_date: date = datetime.strptime(start, DATE_FORMAT).date()
                 queryset = queryset.filter(start_date__gte=start_date)
             except ValueError:
@@ -118,8 +119,9 @@ class TaskViewSet(viewsets.ModelViewSet):
 
         if end:
             try:
+                logger.info(f"End date: {end}")
                 end_date: date = datetime.strptime(end, DATE_FORMAT).date()
-                queryset = queryset.filter(Q(due_date__lte=end_date))
+                queryset = queryset.filter(Q(due_date__lte=end_date) | Q(due_date__isnull=True))
             except ValueError:
                 logger.error(f"Invalid date format: {end}")
                 return Response(

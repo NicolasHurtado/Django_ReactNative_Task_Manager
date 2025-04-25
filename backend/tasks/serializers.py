@@ -43,6 +43,9 @@ class TaskSerializer(serializers.ModelSerializer):
                 "required": True,
                 "error_messages": {"required": FIELD_REQUIREMENTS["start_date_required"]},
             },
+            "user": {
+                "required": False,
+            },
         }
 
     def validate_title(self, value: str) -> str:

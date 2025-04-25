@@ -213,9 +213,9 @@ LOGGING = {
     },
     "handlers": {
         "console": {
-            "level": "INFO",
+            "level": "DEBUG",
             "class": "logging.StreamHandler",
-            "formatter": "simple",
+            "formatter": "verbose",
         }
     },
     "loggers": {
@@ -229,7 +229,7 @@ LOGGING = {
         },
         "users": {
             "handlers": ["console"],
-            "level": "INFO",
+            "level": "DEBUG",
         },
     },
 }
