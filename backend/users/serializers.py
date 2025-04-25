@@ -17,6 +17,12 @@ class EmailLoginSerializer(serializers.Serializer):
     password = serializers.CharField(required=True, style={"input_type": "password"})
 
 
+class UserBasicSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["id", "username", "email", "first_name", "last_name"]
+
+
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True, style={"input_type": "password"})
     password_confirm = serializers.CharField(write_only=True, required=True, style={"input_type": "password"})

@@ -38,7 +38,7 @@ class TaskViewSet(viewsets.ModelViewSet):
         """
         user: User = self.request.user
         logger.info(f"User: {user}")
-        return Task.objects.filter(user=user)
+        return Task.objects.filter(Q(user=user) | Q(created_by=user))
 
     def perform_create(self, serializer: TaskSerializer) -> None:
         """
@@ -47,7 +47,7 @@ class TaskViewSet(viewsets.ModelViewSet):
         Args:
             serializer: Validated Task serializer.
         """
-        serializer.save(user=self.request.user)
+        serializer.save(created_by=self.request.user)
         logger.info(f"Task created: {serializer.instance.title} by user {self.request.user.username}")
 
     def perform_update(self, serializer: TaskSerializer) -> None:

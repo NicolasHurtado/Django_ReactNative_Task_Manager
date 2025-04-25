@@ -94,3 +94,24 @@ class EmailLoginView(APIView):
 
         logger.info(f"User logged in successfully: {user.username}")
         return Response(response_data, status=status.HTTP_200_OK)
+
+
+class UserView(APIView):
+    """
+    API endpoint for retrieving user information.
+    """
+
+    permission_classes = [permissions.IsAuthenticated]
+
+    @extend_schema(
+        description="Get list of users",
+        responses={200: UserSerializer(many=True)},
+    )
+    def get(self, request) -> Response:
+        """
+        Retrieve list of all users.
+        """
+        users = User.objects.all()
+        serializer = UserSerializer(users, many=True)
+        logger.info(f"Retrieved list of {len(users)} users")
+        return Response(serializer.data, status=status.HTTP_200_OK)

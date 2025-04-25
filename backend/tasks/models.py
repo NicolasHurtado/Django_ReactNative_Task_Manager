@@ -34,6 +34,9 @@ class Task(models.Model):
     completed = models.BooleanField(default=False, verbose_name="Completed")
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="tasks", verbose_name="User")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Creation timestamp")
+    created_by = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="created_tasks", verbose_name="Created by"
+    )
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Last update timestamp")
 
     def __str__(self) -> str:

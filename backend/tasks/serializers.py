@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from tasks.models import Task
-
+from users.serializers import UserBasicSerializer
 from django.contrib.auth.models import User
 from django.db.models import Q
 import logging
@@ -20,6 +20,8 @@ class TaskSerializer(serializers.ModelSerializer):
     - There is no overlap of tasks for the same user
     """
 
+    assigned_user = UserBasicSerializer(source="user", read_only=True)
+
     class Meta:
         model = Task
         fields = [
@@ -32,6 +34,8 @@ class TaskSerializer(serializers.ModelSerializer):
             "user",
             "created_at",
             "updated_at",
+            "assigned_user",
+            "created_by",
         ]
         read_only_fields = ["id", "created_at", "updated_at"]
         extra_kwargs = {
@@ -43,7 +47,7 @@ class TaskSerializer(serializers.ModelSerializer):
                 "required": True,
                 "error_messages": {"required": FIELD_REQUIREMENTS["start_date_required"]},
             },
-            "user": {
+            "created_by": {
                 "required": False,
             },
         }
@@ -94,13 +98,20 @@ class TaskSerializer(serializers.ModelSerializer):
         # Validate task overlap
         user: User | None = data.get("user")
 
-        if user and start_date:
+        if user and due_date:
             # Check if there are tasks that overlap
             task_id: int | None = self.instance.id if self.instance else None
-            overlapping_query = Q(user=user, start_date__lte=start_date)
 
-            if due_date:
-                overlapping_query &= Q(due_date__gte=start_date) | Q(due_date__isnull=True)
+            overlapping_query = Q(user=user, completed=False) & (
+                # Check if task exists starts during our task
+                Q(start_date__gte=start_date, start_date__lte=due_date)
+                |
+                # Check if task exists ends during our task
+                Q(due_date__gte=start_date, due_date__lte=due_date)
+                |
+                # Check if task exists contains our task
+                Q(start_date__lte=start_date, due_date__gte=due_date)
+            )
 
             # Exclude the current task if it is being updated
             if task_id:
@@ -110,7 +121,10 @@ class TaskSerializer(serializers.ModelSerializer):
 
             if overlapping_tasks.exists():
                 error_msg = ERROR_MESSAGES["task_overlap"]
-                logger.warning(f"Validation failed: {error_msg} User: {user.username}")
-                raise serializers.ValidationError({"start_date": error_msg})
+                overlapping_task = overlapping_tasks.first()
+                logger.warning(
+                    f"Validation failed: {error_msg} User: {user.username} Overlapping task: {overlapping_task.title}"
+                )
+                raise serializers.ValidationError({"start_date": error_msg, "overlapping_task": overlapping_task.title})
 
         return data

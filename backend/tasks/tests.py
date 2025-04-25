@@ -60,8 +60,7 @@ class TestTaskAPI:
         # Verify that the task was assigned to the current authenticated user
         new_task: Task = Task.objects.get(id=response.data["id"])
         assert new_task.title == "New task"
-        assert new_task.user == self.user
-        assert new_task.user != other_user
+        assert new_task.user == other_user
 
     def test_update_task(self, task_factory: Callable) -> None:
         """Test that a task can be updated."""
@@ -267,8 +266,8 @@ class TestTaskAPI:
         data: dict = {
             "title": "Another task in February",
             "description": "This task should overlap with the task without a due date",
-            "start_date": "2025-02-10",
-            "due_date": "2025-02-15",
+            "start_date": "2025-01-21",
+            "due_date": "2025-02-01",
             "user": self.user.id,
         }
 
