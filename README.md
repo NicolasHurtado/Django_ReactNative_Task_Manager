@@ -52,6 +52,11 @@ The frontend (React Native) communicates with the backend (Django) through a RES
 
 To start both backend and frontend at once, use the provided script:
 
+- **IMPORTANT**: You must change the `API_URL` variable in the frontend `.env` file  with your ip:
+    ```bash
+        API_URL=http://192.168.x.x:8000/api
+    ```
+
 ```bash
 bash start_app.sh
 ```
