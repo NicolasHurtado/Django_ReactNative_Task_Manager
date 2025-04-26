@@ -52,7 +52,7 @@ A modern mobile application for team task management, built with React Native an
 3. **Start the application**:
    ### .env File Configuration
 
-   -Edit the `.env` file in the project root to update the IP with your local IP address:
+   - Edit the `.env` file in the project root to update the IP with your local IP address:
       ```
       # API Configuration
       API_URL=http://192.168.1.xxx:8000/api
