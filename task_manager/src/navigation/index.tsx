@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { ActivityIndicator, View, Text, StyleSheet, StatusBar, ImageBackground } from 'react-native';
 import { useAuthStore } from '../store/authStore';
 
 // Import screens
@@ -12,7 +11,6 @@ import SplashScreen from '../screens/SplashScreen';
 
 // Define types for navigation
 export type AuthStackParamList = {
-  Splash: undefined;
   Login: undefined;
   Register: undefined;
 };
@@ -25,54 +23,26 @@ export type MainStackParamList = {
 const AuthStack = createStackNavigator<AuthStackParamList>();
 const MainStack = createStackNavigator<MainStackParamList>();
 
-// Versión simplificada del SplashScreen para usar después del logout
-// sin depender de los hooks de navegación
-const LogoutSplashScreen = () => {
-  return (
-    <View style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor="transparent" translucent />
-      <ImageBackground
-        source={require('../../assets/Blur.png')}
-        style={styles.backgroundImage}
-      >
-        <View style={styles.contentContainer}>
-          <View style={styles.logoOuterCircle}>
-            <View style={styles.logoInnerCircle}>
-              <Text style={styles.logoText}>C</Text>
-            </View>
-          </View>
-          <Text style={styles.appName}>Collaby</Text>
-        </View>
-      </ImageBackground>
-    </View>
-  );
-};
-
-// Navigator for authentication screens
+// Authentication navigator
 const AuthNavigator = () => (
-  <AuthStack.Navigator 
-    initialRouteName="Splash"
-    screenOptions={{ 
+  <AuthStack.Navigator
+    screenOptions={{
       headerShown: false,
-      cardStyle: { backgroundColor: '#fff' }
+      cardStyle: { backgroundColor: 'transparent' },
     }}
   >
-    <AuthStack.Screen 
-      name="Splash" 
-      component={SplashScreen} 
+    <AuthStack.Screen
+      name="Login"
+      component={LoginScreen}
     />
-    <AuthStack.Screen 
-      name="Login" 
-      component={LoginScreen} 
-    />
-    <AuthStack.Screen 
-      name="Register" 
-      component={RegisterScreen} 
+    <AuthStack.Screen
+      name="Register"
+      component={RegisterScreen}
     />
   </AuthStack.Navigator>
 );
 
-// Navigator for main screens
+// Main application navigator
 const MainNavigator = () => (
   <MainStack.Navigator
     screenOptions={{ 
@@ -88,101 +58,53 @@ const MainNavigator = () => (
   </MainStack.Navigator>
 );
 
-// Main navigator with authentication verification
+// Root navigator with authentication state handling
 const AppNavigator = () => {
   const { isAuthenticated, checkAuth } = useAuthStore();
-  const [isLoading, setIsLoading] = useState(true);
-  const [showSplashAfterLogout, setShowSplashAfterLogout] = useState(false);
-  
-  // Monitorear cambios en isAuthenticated para determinar si es un logout
+  const [isInitializing, setIsInitializing] = useState(true);
+  const [showSplash, setShowSplash] = useState(true);
+
+  // Initialization of the authentication
   useEffect(() => {
-    if (!isAuthenticated && !isLoading) {
-      // Si no está autenticado y no está cargando inicialmente, 
-      // probablemente es un logout
-      setShowSplashAfterLogout(true);
+    const initialize = async () => {
+      await checkAuth();
+      setIsInitializing(false);
       
-      // Resetear después de 2 segundos (tiempo que toma el SplashScreen)
+      // Show the splash for 2 seconds when starting
+      setTimeout(() => {
+        setShowSplash(false);
+      }, 2000);
+    };
+    
+    initialize();
+  }, []);
+
+  // Handle logout
+  useEffect(() => {
+    // If not initializing and changes to unauthenticated, show splash
+    if (!isInitializing && !isAuthenticated && !showSplash) {
+      setShowSplash(true);
+      
+      // Show for 2 seconds
       const timer = setTimeout(() => {
-        setShowSplashAfterLogout(false);
+        setShowSplash(false);
       }, 2000);
       
       return () => clearTimeout(timer);
     }
-  }, [isAuthenticated, isLoading]);
+  }, [isAuthenticated, isInitializing]);
 
-  useEffect(() => {
-    const initializeAuth = async () => {
-      await checkAuth();
-      setIsLoading(false);
-    };
-    
-    initializeAuth();
-  }, []);
-
-  if (isLoading) {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator size="large" color="#2196F3" />
-        <Text style={{ marginTop: 10 }}>Loading...</Text>
-      </View>
-    );
-  }
-  
-  // Si recién se hizo logout, mostrar nuestra versión simplificada del SplashScreen
-  if (showSplashAfterLogout) {
-    return <LogoutSplashScreen />;
+  // If we are in splash, show the SplashScreen component
+  if (showSplash) {
+    return <SplashScreen />;
   }
 
+  // Main navigation based on authentication
   return (
     <NavigationContainer>
       {isAuthenticated ? <MainNavigator /> : <AuthNavigator />}
     </NavigationContainer>
   );
 };
-
-// Estilos para LogoutSplashScreen
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  backgroundImage: {
-    flex: 1,
-    width: '100%',
-    height: '100%',
-    resizeMode: 'cover',
-  },
-  contentContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  logoOuterCircle: {
-    width: 110,
-    height: 110,
-    borderRadius: 55,
-    backgroundColor: 'rgba(255, 255, 255, 0.9)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  logoInnerCircle: {
-    width: 90,
-    height: 90,
-    borderRadius: 45,
-    backgroundColor: '#0078FF',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  logoText: {
-    fontSize: 50,
-    fontWeight: 'bold',
-    color: '#FFFFFF',
-  },
-  appName: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    color: '#ffffff',
-    marginTop: 20,
-  },
-});
 
 export default AppNavigator; 
