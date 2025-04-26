@@ -126,7 +126,12 @@ export const useTaskStore = create<TaskState>((set, get) => ({
   },
   
   markAsCompleted: async (id: number) => {
-    return get().updateTask(id, { completed: true });
+    const { tasks } = get();
+    const task = tasks.find(t => t.id === id);
+    if (!task) return Promise.reject(new Error('Task not found'));
+    
+    // Invert the current state of completed
+    return get().updateTask(id, { completed: !task.completed });
   },
   
   searchByDateRange: async (startDate: string, endDate?: string, searchQuery?: string) => {
