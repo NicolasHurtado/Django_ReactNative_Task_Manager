@@ -1,17 +1,15 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-// Configure the IP of your local machine where Docker is running
-const TU_IP_LOCAL = '192.168.1.8'; // CHANGE THIS to your actual IP (e.g., 192.168.1.5)
+import { API_URL } from '@env';
 
 // Configuration of URL according to the platform where the app is running
-let API_URL = `http://${TU_IP_LOCAL}:8000/api`;
+// If API_URL is not defined in .env, use a fallback
+const apiUrl = API_URL || 'http://localhost:8000/api';
 
-
-console.log('API URL configured:', API_URL);
+console.log('API URL configured:', apiUrl);
 
 const apiClient = axios.create({
-  baseURL: API_URL,
+  baseURL: apiUrl,
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json',
