@@ -223,3 +223,11 @@ To update the `requirements.txt` file from `pyproject.toml` (useful for non-Poet
 ```bash
 poetry export -f requirements.txt --output requirements.txt --without-hashes
 ``` 
+
+## 📞 Contact
+
+For any inquiries about the project, contact us at [nicolashurtado0712@gmail.com](mailto:nicolashurtado0712@gmail.com).
+
+---
+
+Developed with ❤️ by Nicolas Hurtado
