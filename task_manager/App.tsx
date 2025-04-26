@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { ImageBackground, StyleSheet } from 'react-native';
 import AppNavigator from './src/navigation';
@@ -28,7 +27,6 @@ export default function App() {
       resizeMode="cover"
     >
       <SafeAreaProvider style={styles.container}>
-        <StatusBar style="light" translucent backgroundColor="transparent" />
         <AppNavigator />
       </SafeAreaProvider>
     </ImageBackground>

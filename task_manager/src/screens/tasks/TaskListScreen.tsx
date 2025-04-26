@@ -10,6 +10,7 @@ import {
   Platform,
   Alert,
   Image,
+  StatusBar,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -178,7 +179,7 @@ const TaskListScreen: React.FC<TaskListScreenProps> = ({ navigation }) => {
   // Render empty list
   const renderEmptyList = () => (
     <View style={styles.emptyContainer}>
-      {/* Placeholders para las tareas */}
+      {/* Placeholders for the tasks */}
       <View style={styles.placeholdersContainer}>
         <TaskCard
           task={{ id: 0, title: '', description: '', completed: false, start_date: '', user: 0 }}
@@ -213,6 +214,7 @@ const TaskListScreen: React.FC<TaskListScreenProps> = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.safeArea}>
+      <StatusBar backgroundColor="#FFFFFF" barStyle="dark-content" />
       <View style={styles.container}>
         {/* Header */}
         <View style={styles.header}>
@@ -392,14 +394,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    paddingTop: 30,
+    paddingTop: 20,
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 30,
-    marginTop: -30,
+    marginTop: 20,
   },
   title: {
     fontSize: 26,

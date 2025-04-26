@@ -46,14 +46,12 @@ const AuthNavigator = () => (
 const MainNavigator = () => (
   <MainStack.Navigator
     screenOptions={{ 
-      headerStyle: { backgroundColor: '#2196F3' },
-      headerTintColor: '#fff',
+      headerShown: false,
     }}
   >
     <MainStack.Screen 
       name="TaskList" 
       component={TaskListScreen} 
-      options={{ title: 'My Tasks' }} 
     />
   </MainStack.Navigator>
 );
