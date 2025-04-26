@@ -50,10 +50,9 @@ A modern mobile application for team task management, built with React Native an
    ```
 
 3. **Start the application**:
-   ```bash
    ### .env File Configuration
 
-   1. Edit the `.env` file in the project root to update the IP with your local IP address:
+   -Edit the `.env` file in the project root to update the IP with your local IP address:
       ```
       # API Configuration
       API_URL=http://192.168.1.xxx:8000/api
@@ -62,19 +61,17 @@ A modern mobile application for team task management, built with React Native an
       NODE_ENV=development
       ```
 
-   2. Replace "xxx" with your correct IP address (e.g., 192.168.1.100)
+   - Replace "xxx" with your correct IP address (e.g., 192.168.1.100)
 
-   3. Start the application with:
+   - Start the application with:
       ```bash
       npx expo start
       ```
 
-   4. **IMPORTANT**: If you change any variable in the `.env` file, you must restart the application with the `--clear` parameter to clear the cache:
+   - **IMPORTANT**: If you change any variable in the `.env` file, you must restart the application with the `--clear` parameter to clear the cache:
       ```bash
       npx expo start --clear
       ```
-
-   ```
 
 4. **Run on device or emulator**:
    - Press `a` for Android
