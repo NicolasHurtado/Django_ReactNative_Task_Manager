@@ -29,14 +29,33 @@ const DatePickerModal: React.FC<DatePickerModalProps> = ({
   maximumDate
 }) => {
   const [selectedDate, setSelectedDate] = React.useState(currentDate);
+  const [showAndroidPicker, setShowAndroidPicker] = React.useState(false);
 
   // Reset selected date when modal is opened with a new currentDate
   React.useEffect(() => {
     setSelectedDate(currentDate);
+    
+    // For Android, show the picker only when the modal is visible
+    if (Platform.OS === 'android' && isVisible) {
+      setShowAndroidPicker(true);
+    }
   }, [currentDate, isVisible]);
 
   const handleChange = (event: DateTimePickerEvent, date?: Date) => {
-    if (date) {
+    // For Android, when the user selects a date or cancels the native picker
+    if (Platform.OS === 'android') {
+      setShowAndroidPicker(false);
+      
+      if (event.type === 'set' && date) {
+        setSelectedDate(date);
+        // For Android, we automatically confirm when a date is selected
+        onDateSelect(date);
+      } else {
+        // For Android, we close the modal when the user cancels
+        onClose();
+      }
+    } else if (date) {
+      // For iOS, we only update the selected date
       setSelectedDate(date);
     }
   };
@@ -47,6 +66,25 @@ const DatePickerModal: React.FC<DatePickerModalProps> = ({
 
   if (!isVisible) return null;
 
+  // For Android, we show only the native DateTimePicker when needed
+  if (Platform.OS === 'android') {
+    return (
+      <>
+        {showAndroidPicker && (
+          <DateTimePicker
+            value={selectedDate}
+            mode="date"
+            display="default"
+            onChange={handleChange}
+            minimumDate={minimumDate}
+            maximumDate={maximumDate}
+          />
+        )}
+      </>
+    );
+  }
+
+  // For iOS, we show the custom modal
   return (
     <Modal
       transparent={true}
@@ -64,31 +102,19 @@ const DatePickerModal: React.FC<DatePickerModalProps> = ({
           </View>
 
           <View style={styles.pickerContainer}>
-            {Platform.OS === 'ios' ? (
-              <View style={styles.iosPickerWrapper}>
-                <DateTimePicker
-                  value={selectedDate}
-                  mode="date"
-                  display="spinner"
-                  onChange={handleChange}
-                  minimumDate={minimumDate}
-                  maximumDate={maximumDate}
-                  textColor="#000000"
-                  themeVariant="light"
-                  style={styles.iosDatePicker}
-                />
-              </View>
-            ) : (
+            <View style={styles.iosPickerWrapper}>
               <DateTimePicker
                 value={selectedDate}
                 mode="date"
-                display="default"
+                display="spinner"
                 onChange={handleChange}
                 minimumDate={minimumDate}
                 maximumDate={maximumDate}
-                style={styles.datePicker}
+                textColor="#000000"
+                themeVariant="light"
+                style={styles.iosDatePicker}
               />
-            )}
+            </View>
           </View>
 
           <View style={styles.buttonContainer}>

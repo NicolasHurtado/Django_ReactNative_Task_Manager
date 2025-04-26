@@ -434,7 +434,11 @@ const EditTaskModal: React.FC<EditTaskModalProps> = ({ visible, onClose, task })
                     isVisible={showStartDatePicker}
                     onClose={() => setShowStartDatePicker(false)}
                     onDateSelect={(date) => {
-                      const formattedDate = date.toISOString().split('T')[0];
+                      // Ajustamos la zona horaria para evitar el desplazamiento de un día
+                      const localDate = new Date(date);
+                      const offset = localDate.getTimezoneOffset();
+                      const adjustedDate = new Date(localDate.getTime() + offset * 60 * 1000);
+                      const formattedDate = adjustedDate.toISOString().split('T')[0];
                       setFieldValue('start_date', formattedDate);
                       setShowStartDatePicker(false);
                     }}
@@ -446,7 +450,11 @@ const EditTaskModal: React.FC<EditTaskModalProps> = ({ visible, onClose, task })
                     isVisible={showDueDatePicker}
                     onClose={() => setShowDueDatePicker(false)}
                     onDateSelect={(date) => {
-                      const formattedDate = date.toISOString().split('T')[0];
+                      // Ajustamos la zona horaria para evitar el desplazamiento de un día
+                      const localDate = new Date(date);
+                      const offset = localDate.getTimezoneOffset();
+                      const adjustedDate = new Date(localDate.getTime() + offset * 60 * 1000);
+                      const formattedDate = adjustedDate.toISOString().split('T')[0];
                       setFieldValue('due_date', formattedDate);
                       setShowDueDatePicker(false);
                     }}
