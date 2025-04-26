@@ -12,6 +12,7 @@ A complete task management system with client-server architecture, built with Re
 - npm or yarn
 - Python 3.11+
 - Docker and Docker Compose (recommended for backend)
+- Bash (to run the startup script)
 
 
 This repository contains two main components:
@@ -46,6 +47,19 @@ The frontend (React Native) communicates with the backend (Django) through a RES
 2. **Authorization**: Requests to the backend include the token to access protected resources
 3. **CRUD Operations**: Frontend can create, read, update, and delete tasks through specific endpoints
 4. **Validation**: Backend validates data and returns appropriate responses (success/error)
+
+## 🚀 Quick Start
+
+To start both backend and frontend at once, use the provided script:
+
+```bash
+bash start_app.sh
+```
+
+This will:
+1. Start the backend services with Docker Compose
+2. Install frontend dependencies
+3. Start the Expo development server for the frontend
 
 ## 📦 Deployment
 
