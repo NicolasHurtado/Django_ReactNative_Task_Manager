@@ -66,20 +66,20 @@ A modern mobile application for team task management, built with React Native an
 1. **Sign In / Register**:
    - Use your credentials to access
    - Register if you're a new user
-     ![image](https://github.com/user-attachments/assets/f1413c1b-6fea-48eb-907c-e79a93771017)
+![image](https://github.com/user-attachments/assets/f1413c1b-6fea-48eb-907c-e79a93771017)
 
 2. **Task Management**:
    - Tap the "Create a Task" button to create a new task
    - Set title, description, assignee, start/end dates
    - Tap an existing task to view or edit its details
-     ![image](https://github.com/user-attachments/assets/2683ca13-f211-4616-a55a-606f88039606)
+![image](https://github.com/user-attachments/assets/2683ca13-f211-4616-a55a-606f88039606)
 
 
 3. **Navigation**:
    - Use the bottom navigation to move between sections
    - Swipe to refresh the task list
-     ![image](https://github.com/user-attachments/assets/48a06903-4bf7-4d3c-b1b1-a3e8b3131879)
-     ![image](https://github.com/user-attachments/assets/82154d91-453d-42f5-be5a-a174e48b867c)
+![image](https://github.com/user-attachments/assets/48a06903-4bf7-4d3c-b1b1-a3e8b3131879)
+![image](https://github.com/user-attachments/assets/82154d91-453d-42f5-be5a-a174e48b867c)
 
 
 
