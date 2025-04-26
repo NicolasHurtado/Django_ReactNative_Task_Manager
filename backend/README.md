@@ -1,6 +1,8 @@
 # Backend - Collaborative Task Manager
 
 Backend for the task management application developed with Django and Django REST Framework.
+![image](https://github.com/user-attachments/assets/08ba61a1-10b1-48a9-9e3e-da026f4fb30b)
+
 
 ## Features
 
