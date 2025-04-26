@@ -222,7 +222,11 @@ const TaskListScreen: React.FC<TaskListScreenProps> = ({ navigation }) => {
           </View>
           <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
             <View style={styles.iconContainer}>
-              <Text style={styles.logoutIconText}>→</Text>
+              {Platform.OS === 'android' ? (
+                <Feather name="arrow-right" size={16} color="#333333" />
+              ) : (
+                <Text style={styles.logoutIconText}>→</Text>
+              )}
             </View>
             <Text style={styles.logoutText}>Log out</Text>
           </TouchableOpacity>
