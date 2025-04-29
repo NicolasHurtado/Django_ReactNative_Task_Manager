@@ -45,7 +45,6 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, onPress, onToggleComplete, is
 
   // Generate user initials from username or assigned user info
   const getUserInitials = (): string => {
-    //console.log(task);
     if (task.assigned_user) {
       return `${task.assigned_user.first_name.charAt(0)}${task.assigned_user.last_name.charAt(0)}`;
     } else if (task.user) {

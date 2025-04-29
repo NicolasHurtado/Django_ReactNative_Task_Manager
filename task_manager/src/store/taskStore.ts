@@ -41,7 +41,6 @@ export const useTaskStore = create<TaskState>((set, get) => ({
     set({ isLoading: true, error: null });
     try {
       const tasks = await fetchTasks();
-      //console.log(tasks);
       set({ tasks, filteredTasks: tasks, isLoading: false });
     } catch (error: any) {
       set({ 

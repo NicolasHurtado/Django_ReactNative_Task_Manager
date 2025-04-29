@@ -110,8 +110,10 @@ const TaskListScreen: React.FC<TaskListScreenProps> = ({ navigation }) => {
     
     if (startDate) {
       // Si hay fechas seleccionadas, aplicar búsqueda con filtro de fechas
-      const formattedStartDate = startDate.toISOString().split('T')[0];
-      const formattedDueDate = dueDate ? dueDate.toISOString().split('T')[0] : undefined;
+      const localStartDate = new Date(startDate.getTime() - (startDate.getTimezoneOffset() * 60000));
+      const formattedStartDate = localStartDate.toISOString().split('T')[0];
+
+      const formattedDueDate = dueDate ? new Date(dueDate.getTime() - (dueDate.getTimezoneOffset() * 60000)).toISOString().split('T')[0] : undefined;
       searchByDateRange(formattedStartDate, formattedDueDate, text);
     } else {
       // Si no hay fechas, solo filtrar por texto
@@ -154,8 +156,11 @@ const TaskListScreen: React.FC<TaskListScreenProps> = ({ navigation }) => {
     try {
       if (!startDate) return;
       
-      const formattedStartDate = startDate.toISOString().split('T')[0];
-      const formattedDueDate = dueDate ? dueDate.toISOString().split('T')[0] : undefined;
+      const localStartDate = new Date(startDate.getTime() - (startDate.getTimezoneOffset() * 60000));
+      const formattedStartDate = localStartDate.toISOString().split('T')[0];
+      
+      const localDueDate = dueDate ? new Date(dueDate.getTime() - (dueDate.getTimezoneOffset() * 60000)) : null;
+      const formattedDueDate = localDueDate ? localDueDate.toISOString().split('T')[0] : undefined;
       
       await searchByDateRange(formattedStartDate, formattedDueDate, searchQuery);
     } catch (error) {
